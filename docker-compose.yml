@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   app:
-    container_name: front_shoes
-    image: front_shoes
+    container_name: front_ecommerce_liz
+    image: front_ecommerce_liz
     build:
       context: ./frontend/loja-liz
     ports:
