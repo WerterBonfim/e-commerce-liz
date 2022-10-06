@@ -1,0 +1,3 @@
+[submodule "frontend/loja-liz"]
+	path = frontend/loja-liz
+	url = https://github.com/LizandraBonfim/loja-liz.git

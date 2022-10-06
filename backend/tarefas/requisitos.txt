@@ -1,0 +1,32 @@
+Ecommerce Liz
+=============================
+Adm:
+    Um administrador podera cadastrar os produtos que serão vendidos na loja:
+    nome, descrição, preço, fotos, categoria, quantidade em estoque
+
+    O nome do produto deve suportar 100 caracteres.
+
+    A descrição 300 caracteares.
+
+    Além do preço, deve definir até em quantas vezes pode ser parcelado.
+
+    O adm podera inserir uma lista de imagens, porem, ele tem que de definir uma
+    como principal.
+
+    Ele deve cadastrar informar uma categoria.
+    A categoria deve ser cadastrada previamente.
+
+Cliente:
+    Um cliente devera se cadastrar informando os seguintes dados:
+    Nome completo, e-mail e CPF.
+
+    Validar o cadastro ele precisa confirmar um código que sera fornecido por email.
+    Sem a confirmação email/código o cliente não poderar finalizar suas compras.
+
+    Ao finalizar suas compras, ele poderá receber notificação das compras por WhatsApp e 
+    email.
+
+    Na hora de finalizar a compra, o usuário precisa informar o endereço de entrega:
+    CEP, endereço, numero, referencia. Nome da pessoa que ira receber o produto.
+
+

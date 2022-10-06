@@ -1,0 +1,20 @@
+Cenários
+================================
+
+Ação 01: - Incluir produto (Administrador)
+
+Cenário 01
+    Quando o Adiministrador
+    Incluir um novo produto
+    E o nome não for informado
+    Deve retornar a mensagem "O nome do produto não foi informado"
+    E não deve incluir o produto
+
+
+
+- Informar nome
+- Informar descrição
+- Informar preço
+- Informar Imagem
+- Informar quantidade em estoque
+- Informar categoria

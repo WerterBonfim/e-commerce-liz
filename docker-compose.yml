@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: front_shoes
+    image: front_shoes
+    build:
+      context: ./frontend/loja-liz
+    ports:
+      - 8080:80
+    deploy:
+      resources:
+        limits:
+          memory: 2G

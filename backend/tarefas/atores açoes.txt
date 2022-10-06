@@ -1,0 +1,39 @@
+Atores
+===============================
+- Administrador
+- Cliente
+- Sistema
+
+
+
+
+Açoes
+================================
+- Incluir produto (Administrador) 
+- Alterar produto (Administrador)
+- Excluir produto (Administrador)
+- Consultar produto (Administrador)
+
+- Se cadastrar (Cliente)
+- Efetuar Login (Cliente)
+
+- Cadastrar endereço (Cliente)
+- Alterar endereço (Cliente)
+- Deletar endereço (Cliente)
+
+- Cadastrar dados de pagamento (Cliente)
+- Alterar dados de pagamento (Cliente)
+- Deletar dados de pagamento (Cliente)
+
+- Cadastrar telefone (Cliente)
+- Alterar telefone (Cliente)
+- Excluir telefone (Cliente)
+
+- Consultar Compras (Clientes)
+- Cancelar Pedido (Cliente)
+- Reabrir Pedido (Cliente)
+
+- Enviar resumo do pedido por email (Sistema)
+- Enviar resudo do pedido por WhatsApp (Sistema)
+- Enivar atualização de status por email (Sistema)
+- Enviar atualização de status por WhatsApp (Sistema)
