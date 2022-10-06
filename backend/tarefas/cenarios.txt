@@ -4,13 +4,124 @@ Cenários
 Ação 01: - Incluir produto (Administrador)
 
 Cenário 01
-    Quando o Adiministrador
+    Quando o Administrador
     Incluir um novo produto
     E o nome não for informado
     Deve retornar a mensagem "O nome do produto não foi informado"
     E não deve incluir o produto
 
+Cenário 02
+    Quando o Administrador
+    Incluir um novo produto
+    E o nome tiver mais de 50 caracteres
+    Deve retornar a mensagem "O nome do produto não pode ter mais de 50 caracteres"
+    E não deve incluir o produto
 
+Cenário 03
+    Quando o Administrador
+    Incluir um novo produto
+    E o nome tiver menos de 2 caracteres
+    Deve retornar a mensagem "O nome do produto não pode ter menos de 2 caracteres"
+    E não deve incluir o produto
+
+
+Cenário 04
+    Quando o Administrador
+    Incluir um novo produto
+    E a descrição não for informada
+    Deve retornar a mensagem "A descrição do produto não foi preenchida"
+    E não deve incluir o produto
+
+Cenário 05
+    Quando o Administrador
+    Incluir um novo produto
+    E a descrição tiver mais de 300 caracteres
+    Deve retornar a mensagem "A descrição do produto não pode ter mais de 300 caracteres"
+    E não deve incluir o produto
+
+
+Cenário 06
+    Quando o Administrador
+    Incluir um novo produto
+    E o preço não for informado
+    Deve retornar a mensagem "O preço não foi informado"
+    E não deve incluir o produto
+
+
+Cenário 06
+    Quando o Administrador
+    Incluir um novo produto
+    E o preço for 0
+    Deve retornar a mensagem "O preço não foi informado"
+    E não deve incluir o produto
+
+
+Cenário 07
+    Quando o Administrador
+    Incluir um novo produto
+    E o preço for negativo
+    Deve retornar a mensagem "O preço informado é inválido"
+    E não deve incluir o produto
+
+
+Cenário 08
+    Quando o Administrador
+    Incluir um novo produto
+    E a Imagem não for fornecida
+    Deve retornar a mensagem "A imagem do produto não foi fornecida"
+    E não deve incluir o produto
+
+
+Cenário 09
+    Quando o Administrador
+    Incluir um novo produto
+    E a Imagem tiver mais de 2MB
+    Deve retornar a mensagem "O tamanho da imagem é muito grande. A imagem deve ter um tamanho máximo de 2MB"
+    E não deve incluir o produto
+
+
+Cenário 10
+    Quando o Administrador
+    Incluir um novo produto
+    E foi fornecido mais de 7 imagens
+    Deve retornar a mensagem "Quantidade de imagens excedida para esse produto. A quantidade máxima é 7."
+    E não deve incluir o produto
+
+
+
+Cenário 11
+    Quando o Administrador
+    Incluir um novo produto
+    E a quantidade em estoque for negativa
+    Deve retornar a mensagem "O valor da quantidade em estoque é inválida."
+    E não deve incluir o produto
+
+Cenário 12
+    Quando o Administrador
+    Incluir um novo produto
+    E a categoria não for preenchida
+    Deve retornar a mensagem "O campo categoria é um campo obrigatório"
+    E não deve incluir o produto
+
+
+
+Cenário 13
+    Quando o Administrador
+    Incluir um novo produto
+    E a categoria tiver mais de 50 caracteres
+    Deve retornar a mensagem "O campo categoria tem mais de 50 caracteres"
+    E não deve incluir o produto
+
+
+Cenário 14 - Caminho Feliz
+    Quando o Administrador
+    Incluir um novo produto
+    E todos os campos forem preenchidos corretamente
+    Deve retornar a mensagem "Produto cadastrado com sucesso."
+    E deve incluir o produto
+
+
+    
 
 - Informar nome
 - Informar descrição
