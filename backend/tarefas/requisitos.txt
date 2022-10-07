@@ -16,6 +16,11 @@ Adm:
     Ele deve cadastrar informar uma categoria.
     A categoria deve ser cadastrada previamente.
 
+    O produto deve iniciar o valor ativo falso.
+
+    O produto só podera ser ativo se houver pelo menos uma imagem cadastrada. 
+    caso contrario o produto não poderar se ativo.
+
 Cliente:
     Um cliente devera se cadastrar informando os seguintes dados:
     Nome completo, e-mail e CPF.

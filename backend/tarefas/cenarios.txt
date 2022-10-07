@@ -83,8 +83,8 @@ Cenário 09
 Cenário 10
     Quando o Administrador
     Incluir um novo produto
-    E foi fornecido mais de 7 imagens
-    Deve retornar a mensagem "Quantidade de imagens excedida para esse produto. A quantidade máxima é 7."
+    E for fornecido mais de 10 imagens
+    Deve retornar a mensagem "Quantidade de imagens excedida para esse produto. A quantidade máxima é 10."
     E não deve incluir o produto
 
 
@@ -113,7 +113,8 @@ Cenário 13
     E não deve incluir o produto
 
 
-Cenário 14 - Caminho Feliz
+
+Cenário Caminho Feliz
     Quando o Administrador
     Incluir um novo produto
     E todos os campos forem preenchidos corretamente
@@ -129,3 +130,38 @@ Cenário 14 - Caminho Feliz
 - Informar Imagem
 - Informar quantidade em estoque
 - Informar categoria
+
+
+
+Ação 02: - Alterar Produto (Administrador)
+
+- Alterar nome
+- Alterar descrição
+- Alterar preço
+- Alterar Imagem
+- Alterar quantidade em estoque
+- Alterar categoria
+
+
+
+
+Cenário 15
+    Quando o Administrador
+    Alterar o produto
+    E o nome definido em branco
+    Deve retornar a mensagem "O nome do produto não foi informado"
+    E não deve alterar o produto
+
+Cenário 16
+    Quando o Administrador
+    Alterar o produto
+    E o nome tiver mais de 50 caracteres
+    Deve retornar a mensagem "O nome do produto não pode ter mais de 50 caracteres"
+    E não deve alterar o produto
+
+Cenário 17
+    Quando o Administrador
+    Alterar o produto
+    E o nome tiver menos de 2 caracteres
+    Deve retornar a mensagem "O nome do produto não pode ter menos de 2 caracteres"
+    E não deve alterar o produto

@@ -22,7 +22,7 @@ public class Produto : EntityBase
     {
         var resultado = Result.Merge(
             Result.FailIf(string.IsNullOrEmpty(nomeImagem), MensagemDeErroPara.NomeDaImagemInvalida),
-            Result.FailIf(_imagens.Count == 10, MensagemDeErroPara.QuantidadeMaximaDeImagensExedida)
+            Result.FailIf(Imagens.Count >= 10, MensagemDeErroPara.QuantidadeMaximaDeImagensExedida)
         );
 
         if (resultado.IsFailed)
@@ -32,8 +32,14 @@ public class Produto : EntityBase
 
         return Result.Ok();
     }
+    
+    
 
-    public static Result<Produto> Criar(string? nome, string descricao, decimal preco, string categoria)
+    public static Result<Produto> Criar(
+        string? nome, 
+        string descricao, 
+        decimal preco, 
+        string categoria)
     {
         var resultadoValidacao = Result.Merge(
             VerificaSeNomeValido(nome),
@@ -53,6 +59,56 @@ public class Produto : EntityBase
             Categorias = categoria
         });
     }
+
+    public Result AlterarNome(string nome)
+    {
+        var resultado = VerificaSeNomeValido(nome);
+        if (resultado.IsFailed)
+            return resultado;
+
+        Nome = nome;
+        HouveAtualizacao();
+
+        return Result.Ok();
+    }
+    
+    public Result AlterarPreco(decimal preco)
+    {
+        var resultado = VerificaSePrecoEValida(preco);
+        if (resultado.IsFailed)
+            return resultado;
+
+        Preco = preco;
+        HouveAtualizacao();
+
+        return Result.Ok();
+    }
+    
+    public Result AlterarDescricao(string descricao)
+    {
+        var resultado = VerificaSeDescricaoEValida(descricao);
+        if (resultado.IsFailed)
+            return resultado;
+
+        Descricao = descricao;
+        HouveAtualizacao();
+
+        return Result.Ok();
+    }
+    
+    public Result AlterarQuantidadeEmEstoque(int qtdEmEstoque)
+    {
+        var resultado = VerificaSeQuantidadeEmEstoqueEValida(qtdEmEstoque);
+        if (resultado.IsFailed)
+            return resultado;
+
+        QuantidadeEmEstoque = qtdEmEstoque;
+        HouveAtualizacao();
+
+        return Result.Ok();
+    }
+
+    
 
     private static Result VerificaSeNomeValido(string? nome) =>
         Result.Merge(
@@ -79,6 +135,11 @@ public class Produto : EntityBase
             Result.FailIf(string.IsNullOrEmpty(categoria), MensagemDeErroPara.CategoriaNaoInformada),
             Result.FailIf(categoria?.Length > 50, MensagemDeErroPara.CategoriaComMaisDe50Caracteres)
         );
+    
+    private static Result VerificaSeQuantidadeEmEstoqueEValida(int qtd) =>
+        Result.Merge(
+            Result.FailIf(qtd < 0, MensagemDeErroPara.QuantidadeEmEstoqueInvalida)
+        );
 
     public struct MensagemDeErroPara
     {
@@ -97,6 +158,10 @@ public class Produto : EntityBase
 
         public const string NomeDaImagemInvalida = "Nome da imagem está inválida";
 
-        public const string QuantidadeMaximaDeImagensExedida = "Não é possivel adicionar mais imagens";
+        public const string QuantidadeMaximaDeImagensExedida =
+            "Quantidade de imagens excedida para esse produto. A quantidade máxima é 10.";
+        
+        public const string QuantidadeEmEstoqueInvalida = "O valor da quantidade em estoque está inválida";
+
     }
 }
