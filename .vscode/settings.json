@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        "backend/src": true,
+        "frontend": true,
+        ".gitignore": true,
+        ".gitmodules": true,
+        "LICENSE": true
+    }
+}

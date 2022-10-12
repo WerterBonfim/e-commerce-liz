@@ -29,10 +29,10 @@ public class Produto : EntityBase
             return resultado;
 
         _imagens.Add(nomeImagem);
+        HouveAtualizacao();
 
         return Result.Ok();
     }
-    
     
 
     public static Result<Produto> Criar(
@@ -108,7 +108,17 @@ public class Produto : EntityBase
         return Result.Ok();
     }
 
-    
+    public Result AlterarCategoria(string categoria)
+    {
+        var resultado = VerificaSeCategoriaEValida(categoria);
+        if (resultado.IsFailed)
+            return resultado;
+
+        Categorias = categoria;
+        HouveAtualizacao();
+
+        return Result.Ok();
+    }
 
     private static Result VerificaSeNomeValido(string? nome) =>
         Result.Merge(

@@ -1,0 +1,49 @@
+using Domain.Entities;
+using Domain.Ports;
+using FluentResults;
+using Mapster;
+using Microsoft.Extensions.Logging;
+
+namespace Application.LidarComProduto.Commands;
+
+public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoCommand, Result<Produto>>
+{
+    private readonly ILogger<IncluirProdutoCommandHandler> _logger;
+    private readonly IProdutoRepository _repositorio;
+
+    public IncluirProdutoCommandHandler(
+        ILogger<IncluirProdutoCommandHandler> logger, 
+        IProdutoRepository repositorio)
+    {
+        _logger = logger;
+        _repositorio = repositorio;
+    }
+
+    public async Task<Result<Produto>> Handle(IncluirProdutoCommand request, CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _logger.LogInformation("Tentativa de inserir produto foi cancelada via cancellationToken");
+            return Result.Fail("Requisição foi cancelada pelo cancellationToken");
+        }
+
+        var resultado = Produto.Criar(
+            request.Nome,
+            request.Descricao,
+            request.Preco,
+            request.Categoria);
+
+        if (resultado.IsFailed)
+        {
+            _logger.LogInformation("Não inseriru o produto. Não passou na validação");
+            return resultado;
+        }
+
+        var resultadoInsersao = await _repositorio.InserirAsync(resultado.Value, cancellationToken);
+       
+        if (resultado.IsSuccess)
+            _logger.LogInformation("Produto inserido com sucesso. ProdutoID: {Id}", resultado.Value.Id);
+        
+        return resultadoInsersao;
+    }
+}

@@ -1,8 +1,6 @@
 using Domain.Entities;
-using FluentAssertions;
-using FluentResults;
 
-namespace EntitiesTests;
+namespace UnitTest.DomainTests;
 
 public class ProdutoTests
 {

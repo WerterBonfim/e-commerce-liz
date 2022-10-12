@@ -24,45 +24,41 @@ Cenário 03
     Deve retornar a mensagem "O nome do produto não pode ter menos de 2 caracteres"
     E não deve incluir o produto
 
-
 Cenário 04
     Quando o Administrador
     Incluir um novo produto
-    E a descrição não for informada
+    E a [descrição] não for informada
     Deve retornar a mensagem "A descrição do produto não foi preenchida"
     E não deve incluir o produto
 
 Cenário 05
     Quando o Administrador
     Incluir um novo produto
-    E a descrição tiver mais de 300 caracteres
+    E a [descrição] tiver mais de 300 caracteres
     Deve retornar a mensagem "A descrição do produto não pode ter mais de 300 caracteres"
     E não deve incluir o produto
 
 
-Cenário 06
+Cenário 06 - Preço
     Quando o Administrador
     Incluir um novo produto
-    E o preço não for informado
+    E o [preço] não for informado
     Deve retornar a mensagem "O preço não foi informado"
     E não deve incluir o produto
 
-
-Cenário 06
+Cenário 06 - Preço
     Quando o Administrador
     Incluir um novo produto
-    E o preço for 0
+    E o [preço] for 0
     Deve retornar a mensagem "O preço não foi informado"
     E não deve incluir o produto
 
-
-Cenário 07
+Cenário 07 - Preço
     Quando o Administrador
     Incluir um novo produto
-    E o preço for negativo
+    E o [preço] for negativo
     Deve retornar a mensagem "O preço informado é inválido"
     E não deve incluir o produto
-
 
 Cenário 08
     Quando o Administrador
@@ -71,14 +67,12 @@ Cenário 08
     Deve retornar a mensagem "A imagem do produto não foi fornecida"
     E não deve incluir o produto
 
-
 Cenário 09
     Quando o Administrador
     Incluir um novo produto
     E a Imagem tiver mais de 2MB
     Deve retornar a mensagem "O tamanho da imagem é muito grande. A imagem deve ter um tamanho máximo de 2MB"
     E não deve incluir o produto
-
 
 Cenário 10
     Quando o Administrador
@@ -87,32 +81,26 @@ Cenário 10
     Deve retornar a mensagem "Quantidade de imagens excedida para esse produto. A quantidade máxima é 10."
     E não deve incluir o produto
 
-
-
 Cenário 11
     Quando o Administrador
     Incluir um novo produto
-    E a quantidade em estoque for negativa
+    E a [quantidade em estoque] for negativa
     Deve retornar a mensagem "O valor da quantidade em estoque é inválida."
     E não deve incluir o produto
 
 Cenário 12
     Quando o Administrador
     Incluir um novo produto
-    E a categoria não for preenchida
+    E a [categoria] não for preenchida
     Deve retornar a mensagem "O campo categoria é um campo obrigatório"
     E não deve incluir o produto
-
-
 
 Cenário 13
     Quando o Administrador
     Incluir um novo produto
-    E a categoria tiver mais de 50 caracteres
+    E a [categoria] tiver mais de 50 caracteres
     Deve retornar a mensagem "O campo categoria tem mais de 50 caracteres"
     E não deve incluir o produto
-
-
 
 Cenário Caminho Feliz
     Quando o Administrador
@@ -165,3 +153,101 @@ Cenário 17
     E o nome tiver menos de 2 caracteres
     Deve retornar a mensagem "O nome do produto não pode ter menos de 2 caracteres"
     E não deve alterar o produto
+
+
+
+## Propriedade descrição
+
+    Cenário 18
+        Quando o Administrador
+        Alterar um novo produto
+        E a [descrição] não for informada
+        Deve retornar a mensagem "A descrição do produto não foi preenchida"
+        E não deve incluir o produto
+
+    Cenário 19
+        Quando o Administrador
+        Alterar um novo produto
+        E a [descrição] tiver mais de 300 caracteres
+        Deve retornar a mensagem "A descrição do produto não pode ter mais de 300 caracteres"
+        E não deve incluir o produto
+
+
+## Propriedade Preço
+
+
+    Cenário 20 - Preço
+        Quando o Administrador
+        Alterar um produto
+        E o [preço] for 0
+        Deve retornar a mensagem "O preço não foi informado"
+        E não deve alterar o produto
+
+
+    Cenário 21 - Preço
+        Quando o Administrador
+        Alterar um produto
+        E o [preço] for negativo
+        Deve retornar a mensagem "O preço informado é inválido"
+        E não deve alterar o produto
+
+
+# Propriedade Quantidade em estoque
+
+    Cenário 22
+        Quando o Administrador
+        Altear um produto
+        E a [quantidade em estoque] for negativa
+        Deve retornar a mensagem "O valor da quantidade em estoque é inválida."
+        E não deve alterar o produto
+
+
+
+    Cenário 23 Caminho de sucesso
+        Quando o Administrador
+        Altear um produto
+        E a [quantidade em estoque] for valida
+        Deve alterar o produto
+
+
+# Propriedade Categoria
+
+    Cenário 12
+        Quando o Administrador
+        Alterar um produto
+        E a [categoria] não for preenchida
+        Deve retornar a mensagem "O campo categoria é um campo obrigatório"
+        E não deve alterar o produto
+
+    Cenário 13
+        Quando o Administrador
+        Alterar um produto
+        E a [categoria] tiver mais de 50 caracteres
+        Deve retornar a mensagem "O campo categoria tem mais de 50 caracteres"
+        E não deve alterar o produto
+
+
+
+# Handlers
+
+    ## IncluirProdutoCommandHandler
+        
+        Cenário 01
+        Ao tentar incluir um produto
+        E o CancelationToken for acionado
+        Deve retornar uma mensagem "Não foi possivel incluir o produto, a requisição foi cancelada"
+        E não deve incluir o produto.
+
+        Cenário 02
+        Ao tentar incluir um produto
+        E o CancelationToken for acionado
+        Deve retornar uma mensagem "Não foi possivel incluir o produto, a requisição foi cancelada"
+        E não deve incluir o produto.
+
+        Cenário 03
+        Ao tentar incluir um produto
+        E a propriedade nome do command estiver inválida
+        Deve retornar uma mensagem "O nome do produto não foi informado"
+        E não deve incluir o produto.
+
+
