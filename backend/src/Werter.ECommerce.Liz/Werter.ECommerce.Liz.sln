@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "ProdutoServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "ProdutoService\Consumers\API\API\API.csproj", "{66AC7A87-72D7-4DBA-994D-524CE61206BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "ProdutoService\Tests\UnitTest\UnitTest\UnitTest.csproj", "{1A506E35-953A-4418-8BD2-A06D44372295}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "ProdutoService\Tests\UnitTest\UnitTest.csproj", "{1A506E35-953A-4418-8BD2-A06D44372295}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoDbAdapter", "RepoDbAdapter", "{BB02C528-A548-4855-9861-A9497C3BF0F4}"
 EndProject
