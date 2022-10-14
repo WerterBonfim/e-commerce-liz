@@ -1,3 +1,5 @@
+using System.Net;
+using Core;
 using FluentResults;
 
 namespace Domain.Entities;
@@ -120,35 +122,39 @@ public class Produto : EntityBase
         return Result.Ok();
     }
 
+    private static Result FailIf(bool isFailure, string message, HttpStatusCode code = HttpStatusCode.BadRequest)
+        => Result.FailIf(isFailure, new FieldError(message, (int)code));
+
     private static Result VerificaSeNomeValido(string? nome) =>
         Result.Merge(
-            Result.FailIf(string.IsNullOrEmpty(nome), MensagemDeErroPara.NomeInvalido),
-            Result.FailIf(nome?.Length > 50, MensagemDeErroPara.NomeComMaisDe50Caracteres),
-            Result.FailIf(nome?.Length < 2, MensagemDeErroPara.NomeComMenosDe2Caracteres)
+            FailIf(string.IsNullOrEmpty(nome), MensagemDeErroPara.NomeInvalido),
+            FailIf(nome?.Length > 50, MensagemDeErroPara.NomeComMaisDe50Caracteres),
+            FailIf(nome?.Length < 2, MensagemDeErroPara.NomeComMenosDe2Caracteres)
+            
         );
 
     private static Result VerificaSeDescricaoEValida(string? descricao) =>
         Result.Merge(
-            Result.FailIf(string.IsNullOrEmpty(descricao), MensagemDeErroPara.DescricaoInvalida),
-            Result.FailIf(descricao?.Length > 300, MensagemDeErroPara.NomeComMaisDe300Caracteres)
+            FailIf(string.IsNullOrEmpty(descricao), MensagemDeErroPara.DescricaoInvalida),
+            FailIf(descricao?.Length > 300, MensagemDeErroPara.NomeComMaisDe300Caracteres)
         );
 
 
     private static Result VerificaSePrecoEValida(decimal preco) =>
         Result.Merge(
-            Result.FailIf(preco == 0, MensagemDeErroPara.PrecoZerado),
-            Result.FailIf(preco < 0, MensagemDeErroPara.PrecoNegativo)
+            FailIf(preco == 0, MensagemDeErroPara.PrecoZerado),
+            FailIf(preco < 0, MensagemDeErroPara.PrecoNegativo)
         );
 
     private static Result VerificaSeCategoriaEValida(string categoria) =>
         Result.Merge(
-            Result.FailIf(string.IsNullOrEmpty(categoria), MensagemDeErroPara.CategoriaNaoInformada),
-            Result.FailIf(categoria?.Length > 50, MensagemDeErroPara.CategoriaComMaisDe50Caracteres)
+            FailIf(string.IsNullOrEmpty(categoria), MensagemDeErroPara.CategoriaNaoInformada),
+            FailIf(categoria?.Length > 50, MensagemDeErroPara.CategoriaComMaisDe50Caracteres)
         );
     
     private static Result VerificaSeQuantidadeEmEstoqueEValida(int qtd) =>
         Result.Merge(
-            Result.FailIf(qtd < 0, MensagemDeErroPara.QuantidadeEmEstoqueInvalida)
+            FailIf(qtd < 0, MensagemDeErroPara.QuantidadeEmEstoqueInvalida)
         );
 
     public struct MensagemDeErroPara

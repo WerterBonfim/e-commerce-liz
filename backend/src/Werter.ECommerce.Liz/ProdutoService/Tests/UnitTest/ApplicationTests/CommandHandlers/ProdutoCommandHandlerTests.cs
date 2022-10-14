@@ -1,7 +1,7 @@
 using Application.LidarComProduto.Commands;
+using Core.LogService;
 using Domain.Entities;
 using Domain.Ports;
-using Microsoft.Extensions.Logging;
 
 
 namespace UnitTest.ApplicationTests.CommandHandlers;
@@ -14,7 +14,7 @@ public class ProdutoCommandHandlerTests
     {
         // [ Arrage ]
 
-        var logger = A.Fake<ILogger<IncluirProdutoCommandHandler>>();
+        var logger = A.Fake<ILoggerManager>();
         var repositorio = A.Fake<IProdutoRepository>();
         
 
@@ -42,10 +42,9 @@ public class ProdutoCommandHandlerTests
         A.CallTo(() => repositorio.InserirAsync(A<Produto>._, CancellationToken.None))
             .MustHaveHappenedANumberOfTimesMatching(x => x == 1);
 
-        A.CallTo(logger)
-            .Where(call => call.Method.Name == "Log")
+        A.CallTo(() => logger.LogInfo(A<string>._))
             .MustHaveHappened(1, Times.Exactly);
-        
+
     }
 
 
@@ -55,7 +54,7 @@ public class ProdutoCommandHandlerTests
     {
         // [ Arrage ]
 
-        var logger = A.Fake<ILogger<IncluirProdutoCommandHandler>>();
+        var logger = A.Fake<ILoggerManager>();
         var repositorio = A.Fake<IProdutoRepository>();
         
 
@@ -86,8 +85,7 @@ public class ProdutoCommandHandlerTests
         A.CallTo(() => repositorio.InserirAsync(A<Produto>._, token))
            .MustNotHaveHappened();
 
-        A.CallTo(logger)
-            .Where(call => call.Method.Name == "Log")
+        A.CallTo(() => logger.LogInfo(A<string>._))
             .MustHaveHappened(1, Times.Exactly);
     }
     
@@ -98,7 +96,7 @@ public class ProdutoCommandHandlerTests
     {
         // [ Arrage ]
 
-        var logger = A.Fake<ILogger<IncluirProdutoCommandHandler>>();
+        var logger = A.Fake<ILoggerManager>();
         var repositorio = A.Fake<IProdutoRepository>();
         
 
@@ -127,8 +125,7 @@ public class ProdutoCommandHandlerTests
         A.CallTo(() => repositorio.InserirAsync(A<Produto>._, CancellationToken.None))
             .MustNotHaveHappened();
 
-        A.CallTo(logger)
-            .Where(call => call.Method.Name == "Log")
+        A.CallTo(() => logger.LogInfo(A<string>._))
             .MustHaveHappened(1, Times.Exactly);
     }
     

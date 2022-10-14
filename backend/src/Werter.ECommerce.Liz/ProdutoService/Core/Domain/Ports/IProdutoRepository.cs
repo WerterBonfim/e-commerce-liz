@@ -5,6 +5,6 @@ namespace Domain.Ports;
 
 public interface IProdutoRepository
 {
-    Task<Produto> Obter(Guid id);
+    Task<Produto?> Obter(Guid id);
     Task<Result> InserirAsync(Produto produto, CancellationToken cancellationToken);
 }

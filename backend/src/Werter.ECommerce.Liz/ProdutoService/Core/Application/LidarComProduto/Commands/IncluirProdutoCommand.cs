@@ -8,4 +8,4 @@ public record IncluirProdutoCommand(
     string Descricao,
     decimal Preco,
     string Categoria
-) : IRequest<Result<Produto>>;
+) : IRequest<Result>;

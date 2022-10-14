@@ -7,16 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Enums" />
-      <Folder Include="ValueObjects" />
+      <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentResults" Version="3.13.0" />
+      <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\BuildingBlocks\Core\Core.csproj" />
-    </ItemGroup>
+
 
 </Project>

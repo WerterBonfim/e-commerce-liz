@@ -1,3 +1,4 @@
+using Core.LogService;
 using Domain.Entities;
 using Domain.Ports;
 using FluentResults;
@@ -6,24 +7,24 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.LidarComProduto.Commands;
 
-public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoCommand, Result<Produto>>
+public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoCommand, Result>
 {
-    private readonly ILogger<IncluirProdutoCommandHandler> _logger;
+    private readonly ILoggerManager _logger;
     private readonly IProdutoRepository _repositorio;
 
     public IncluirProdutoCommandHandler(
-        ILogger<IncluirProdutoCommandHandler> logger, 
+        ILoggerManager logger, 
         IProdutoRepository repositorio)
     {
         _logger = logger;
         _repositorio = repositorio;
     }
 
-    public async Task<Result<Produto>> Handle(IncluirProdutoCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(IncluirProdutoCommand request, CancellationToken cancellationToken)
     {
         if (cancellationToken.IsCancellationRequested)
         {
-            _logger.LogInformation("Tentativa de inserir produto foi cancelada via cancellationToken");
+            _logger.LogInfo("Tentativa de inserir produto foi cancelada via cancellationToken");
             return Result.Fail("Requisição foi cancelada pelo cancellationToken");
         }
 
@@ -35,14 +36,14 @@ public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoComman
 
         if (resultado.IsFailed)
         {
-            _logger.LogInformation("Não inseriru o produto. Não passou na validação");
-            return resultado;
+            _logger.LogInfo("Não inseriru o produto. Não passou na validação");
+            return resultado.ToResult();
         }
 
         var resultadoInsersao = await _repositorio.InserirAsync(resultado.Value, cancellationToken);
        
         if (resultado.IsSuccess)
-            _logger.LogInformation("Produto inserido com sucesso. ProdutoID: {Id}", resultado.Value.Id);
+            _logger.LogInfo($"Produto inserido com sucesso. ProdutoID: {{resultado.Value.Id}}" );
         
         return resultadoInsersao;
     }
