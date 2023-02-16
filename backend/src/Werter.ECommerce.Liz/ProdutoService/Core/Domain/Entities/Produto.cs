@@ -4,17 +4,17 @@ using FluentResults;
 
 namespace Domain.Entities;
 
-public class Produto : EntityBase
+public class Produto : EntityBase<Produto>
 {
-    public string? Nome { get; private set; }
-    public string Descricao { get; private set; }
-    public decimal Preco { get; private set; }
-    public int QuantidadeEmEstoque { get; private set; }
+    public string? Nome { get; set; }
+    public string Descricao { get; set; }
+    public decimal Preco { get; set; }
+    public int QuantidadeEmEstoque { get; set; }
     private IList<string> _imagens = new List<string>(10);
 
     public IReadOnlyCollection<string> Imagens => (IReadOnlyCollection<string>)_imagens;
 
-    public string Categorias { get; private set; }
+    public string Categorias { get; set; }
 
     public Produto()
     {
@@ -35,19 +35,15 @@ public class Produto : EntityBase
 
         return Result.Ok();
     }
-    
 
-    public static Result<Produto> Criar(
-        string? nome, 
-        string descricao, 
-        decimal preco, 
-        string categoria)
+
+    public override Result<Produto> Validar()
     {
         var resultadoValidacao = Result.Merge(
-            VerificaSeNomeValido(nome),
-            VerificaSeDescricaoEValida(descricao),
-            VerificaSePrecoEValida(preco),
-            VerificaSeCategoriaEValida(categoria)
+            VerificaSeNomeValido(Nome),
+            VerificaSeDescricaoEValida(Descricao),
+            VerificaSePrecoEValida(Preco),
+            VerificaSeCategoriaEValida(Categorias)
         );
 
         if (resultadoValidacao.IsFailed)
@@ -55,10 +51,10 @@ public class Produto : EntityBase
 
         return Result.Ok(new Produto
         {
-            Nome = nome,
-            Descricao = descricao,
-            Preco = preco,
-            Categorias = categoria
+            Nome = Nome,
+            Descricao = Descricao,
+            Preco = Preco,
+            Categorias = Categorias
         });
     }
 
@@ -122,8 +118,10 @@ public class Produto : EntityBase
         return Result.Ok();
     }
 
+   
+
     private static Result FailIf(bool isFailure, string message, HttpStatusCode code = HttpStatusCode.BadRequest)
-        => Result.FailIf(isFailure, new FieldError(message, (int)code));
+        => Result.FailIf(isFailure, new FieldError(message, code));
 
     private static Result VerificaSeNomeValido(string? nome) =>
         Result.Merge(

@@ -78,7 +78,7 @@ public class ProdutoTests
 
         resultado.IsFailed
             .Should().BeTrue("Nome é inválido");
-        
+
         produto.DataHoraAlteracao
             .Should().Be(DateTime.MinValue);
 
@@ -251,9 +251,9 @@ public class ProdutoTests
         resultadoAoCriarProduto
             .HasError(x => x.Message == Produto.MensagemDeErroPara.PrecoNegativo);
     }
-    
+
     // Alteração
-    
+
     [Fact(DisplayName = "Não deveria alterar produto, preço zerado")]
     [Trait("Core > Domain > Entities > Produto - Alteração", "Preço")]
     public void NaoDeveriaAlterarProdutoPrecoZerado()
@@ -261,7 +261,7 @@ public class ProdutoTests
         // [ Arrage ]
 
         var produto = CriarProduto();
-        
+
         // [ Act ]
 
         var resultado = produto.AlterarPreco(0);
@@ -270,7 +270,7 @@ public class ProdutoTests
 
         resultado.IsFailed
             .Should().BeTrue("Preço zerado");
-        
+
         produto.DataHoraAlteracao
             .Should().Be(DateTime.MinValue);
 
@@ -284,7 +284,7 @@ public class ProdutoTests
     public void NaoDeveriaAlterarProdutoPrecoNegativo()
     {
         // [ Arrage ]
-        
+
         var produto = CriarProduto();
 
         // [ Act ]
@@ -295,7 +295,7 @@ public class ProdutoTests
 
         resultado.IsFailed
             .Should().BeTrue("Preço negativo");
-        
+
         produto.DataHoraAlteracao
             .Should().Be(DateTime.MinValue);
 
@@ -344,9 +344,9 @@ public class ProdutoTests
             .HasError(x => x.Message == Produto.MensagemDeErroPara.CategoriaComMaisDe50Caracteres);
     }
 
-    
+
     // Cenarios de alteração
-    
+
     [Fact(DisplayName = "Não deveria altear produto, categoria não informada")]
     [Trait("Core > Domain > Entities > Produto - Alteração", "Categoria")]
     public void NaoDeveriaAlterarProdutoCategoriaNaoInformada()
@@ -354,17 +354,17 @@ public class ProdutoTests
         // [ Arrage ]
 
         var produto = CriarProduto();
-        
+
         // [ Act ]
 
         var resultado = produto.AlterarCategoria("");
-            
+
 
         // [ Assert ]
 
         resultado.IsFailed
             .Should().BeTrue("Categoria em branco");
-        
+
         produto.DataHoraAlteracao
             .Should().Be(DateTime.MinValue);
 
@@ -380,22 +380,21 @@ public class ProdutoTests
         // [ Arrage ]
 
         var produto = CriarProduto();
-        
+
         // [ Act ]
 
         var resultado = produto.AlterarCategoria("a".PadLeft(51, 'a'));
 
         resultado.IsFailed
             .Should().BeTrue("Categoria com mais de 50 caracteres");
-        
+
         produto.DataHoraAlteracao
             .Should().Be(DateTime.MinValue);
 
         resultado
             .HasError(x => x.Message == Produto.MensagemDeErroPara.CategoriaComMaisDe50Caracteres);
     }
-    
-    
+
     #endregion
 
     #region [ Validação para Imagens ]
@@ -413,13 +412,11 @@ public class ProdutoTests
         var imagemIncluida = produto.IncluirImagem("guitarra.jpg");
 
         // [ Assert ]
-        
+
         VerificarDataHoraAlteracao(produto.DataHoraAlteracao);
 
         imagemIncluida.IsFailed.Should()
             .BeFalse("Acabei de incluir a primeira imagem");
-        
-        
     }
 
     [Fact(DisplayName = "Deveria falhar ao alterar o produto, nome da imagem não foi fornecida")]
@@ -484,19 +481,18 @@ public class ProdutoTests
         var resultado = produto.AlterarQuantidadeEmEstoque(-1);
 
         // [ Assert ]
-        
+
         produto.DataHoraAlteracao
             .Should().Be(DateTime.MinValue);
 
         resultado.IsFailed.Should()
             .BeTrue("Estoque negativo.");
-        
+
         resultado
             .HasError(x => x.Message == Produto.MensagemDeErroPara.QuantidadeEmEstoqueInvalida);
-        
     }
-    
-    
+
+
     [Fact(DisplayName = "Deveria alterar produto, quantidade em estoque valida")]
     [Trait("Core > Domain > Entities > Produto - Alterar", "QuantidadeEmEstoque")]
     public void DeveriaAlterarProdutoQuantidadeEmEstoqueValida()
@@ -510,55 +506,68 @@ public class ProdutoTests
         var resultado = produto.AlterarQuantidadeEmEstoque(10);
 
         // [ Assert ]
-        
+
         VerificarDataHoraAlteracao(produto.DataHoraAlteracao);
 
         resultado.IsSuccess.Should()
             .BeTrue("Estoque válido");
-        
-        
     }
 
     #endregion
 
     #region [ Utils ]
 
-    private Result<Produto> CriarCenariosParaNome(string? nome) => 
-        Produto
-            .Criar(
-                nome,
-                "Descrição",
-                10,
-                "Instrumento Musical");
+    private Result<Produto> CriarCenariosParaNome(string? nome) =>
+        new Produto
+        {
+            Nome = nome, 
+            Descricao = "Descrição", 
+            QuantidadeEmEstoque = 10, 
+            Categorias = "Instrumento Musical",
+            Preco = 10
+        }.Validar();
+
 
     private Result<Produto> CriarCenariosParaDescricao(string? descricao) =>
-        Produto
-            .Criar(
-                "Nome valido",
-                descricao,
-                10,
-                "Instrumento Musical");
+        new Produto
+        {
+            Nome = "nome", 
+            Descricao = descricao!, 
+            QuantidadeEmEstoque = 10, 
+            Categorias = "Instrumento Musical",
+            Preco = 10
+        }.Validar();
 
     private Result<Produto> CriarCenariosParaPreco(decimal preco) =>
-        Produto
-            .Criar(
-                "Nome valido",
-                "descricao",
-                preco,
-                "Instrumento Musical");
+        new Produto
+        {
+            Nome = "nome", 
+            Descricao = "descricao", 
+            QuantidadeEmEstoque = 10, 
+            Categorias = "Instrumento Musical",
+            Preco = preco
+        }.Validar();
 
 
     private Result<Produto> CriarCenariosParaCategoria(string categoria) =>
-        Produto
-            .Criar(
-                "Nome valido",
-                "descricao",
-                300,
-                categoria);
+        new Produto
+        {
+            Nome = "nome", 
+            Descricao = "descricao", 
+            QuantidadeEmEstoque = 10, 
+            Categorias = categoria,
+            Preco = 300
+        }.Validar();
 
     private Produto CriarProduto() =>
-        Produto.Criar("Guitara", "Guitarra", 100, "Instrumento")
-            .Value;
+        new()
+        {
+            Nome = "nome", 
+            Descricao = "descricao", 
+            QuantidadeEmEstoque = 10, 
+            Categorias = "categoria",
+            Preco = 300
+        };
 
 
     private static void VerificarDataHoraAlteracao(DateTime dataHoraAlteracaoRegistrada)

@@ -2,6 +2,7 @@ using Domain.Ports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RepoDb.Options;
 
 namespace Data;
 
@@ -9,7 +10,7 @@ public static class RepoDbDependencyConfig
 {
     public static void AddRepoDbConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        RepoDb.SqlServerBootstrap.Initialize();
+        RepoDb.GlobalConfiguration.Setup();
 
         var connectionStringRepoDb = configuration.GetConnectionString("RepoDb");
         if (connectionStringRepoDb == null)

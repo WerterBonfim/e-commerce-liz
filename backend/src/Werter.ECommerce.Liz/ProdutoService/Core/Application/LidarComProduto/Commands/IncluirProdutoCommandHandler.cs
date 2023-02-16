@@ -2,8 +2,6 @@ using Core.LogService;
 using Domain.Entities;
 using Domain.Ports;
 using FluentResults;
-using Mapster;
-using Microsoft.Extensions.Logging;
 
 namespace Application.LidarComProduto.Commands;
 
@@ -13,7 +11,7 @@ public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoComman
     private readonly IProdutoRepository _repositorio;
 
     public IncluirProdutoCommandHandler(
-        ILoggerManager logger, 
+        ILoggerManager logger,
         IProdutoRepository repositorio)
     {
         _logger = logger;
@@ -28,11 +26,15 @@ public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoComman
             return Result.Fail("Requisição foi cancelada pelo cancellationToken");
         }
 
-        var resultado = Produto.Criar(
-            request.Nome,
-            request.Descricao,
-            request.Preco,
-            request.Categoria);
+        var produto = new Produto
+        {
+            Nome = request.Nome,
+            Descricao = request.Descricao,
+            Preco = request.Preco,
+            Categorias = request.Categoria
+        };
+
+        var resultado = produto.Validar();
 
         if (resultado.IsFailed)
         {
@@ -41,10 +43,10 @@ public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoComman
         }
 
         var resultadoInsersao = await _repositorio.InserirAsync(resultado.Value, cancellationToken);
-       
+
         if (resultado.IsSuccess)
-            _logger.LogInfo($"Produto inserido com sucesso. ProdutoID: {{resultado.Value.Id}}" );
-        
+            _logger.LogInfo($"Produto inserido com sucesso. ProdutoID: {{resultado.Value.Id}}");
+
         return resultadoInsersao;
     }
 }

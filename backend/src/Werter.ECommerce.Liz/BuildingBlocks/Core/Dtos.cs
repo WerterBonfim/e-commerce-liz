@@ -4,6 +4,7 @@ using FluentResults;
 namespace Core;
 
 public record ErrorDto(string Message, string Code);
+public record ErrorDevDto(string Message, string Code, string InternalMessage);
 
 public record ResultDto(bool IsSuccess, IEnumerable<ErrorDto> Errors);
 
@@ -13,6 +14,13 @@ public static class ResultDtoExtensions
         JsonSerializer.Serialize(errorDto);
 
     public static ResultDto ToResultDto(this Result result)
+    {
+        return result.IsSuccess
+            ? new ResultDto(true, Enumerable.Empty<ErrorDto>())
+            : new ResultDto(false, TranformErrors(result.Errors));
+    }
+
+    public static ResultDto ToResultDto<T>(this Result<T> result)
     {
         return result.IsSuccess
             ? new ResultDto(true, Enumerable.Empty<ErrorDto>())
