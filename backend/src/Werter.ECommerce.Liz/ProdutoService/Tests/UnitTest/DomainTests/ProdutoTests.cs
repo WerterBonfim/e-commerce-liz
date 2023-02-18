@@ -1,3 +1,6 @@
+using AutoFixture;
+using AutoFixture.DataAnnotations;
+using Core;
 using Domain.Entities;
 
 namespace UnitTest.DomainTests;
@@ -20,7 +23,7 @@ public class ProdutoTests
             .Should().BeTrue("Nome é inválido");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.NomeInvalido);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Nome")));
     }
 
     [Fact(DisplayName = "Não deveria incluir produto com nome null")]
@@ -37,7 +40,7 @@ public class ProdutoTests
             .Should().BeTrue("Nome é inválido");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.NomeInvalido);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Nome")));
     }
 
 
@@ -55,8 +58,9 @@ public class ProdutoTests
         resultadoAoCriarProduto.IsFailed
             .Should().BeTrue("Nome tem mais de 50 caracteres");
 
+        var nomeComMuitosCaracteres = MensagemDeErro.ExcedeuMaximoDeCaracteres("Nome", 50);
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.NomeComMaisDe50Caracteres);
+            .HasError(x => x.Message.Contains(nomeComMuitosCaracteres));
     }
 
 
@@ -83,7 +87,7 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.NomeInvalido);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Nome")));
     }
 
     [Fact(DisplayName = "Não deveria alterar produto, nome tem mais de 50 caracteres")]
@@ -103,8 +107,9 @@ public class ProdutoTests
         resultado.IsFailed
             .Should().BeTrue("Nome tem mais de 50 caracteres");
 
+        var nomeComMuitosCaracteres = MensagemDeErro.ExcedeuMaximoDeCaracteres("Nome", 50);
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.NomeComMaisDe50Caracteres);
+            .HasError(x => x.Message.Contains(nomeComMuitosCaracteres));
     }
 
     #endregion
@@ -126,7 +131,7 @@ public class ProdutoTests
             .Should().BeTrue("Descrição em branco");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.DescricaoInvalida);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Descricao")));
     }
 
     [Fact(DisplayName = "Não deveria incluir produto, descrição nulla")]
@@ -144,26 +149,29 @@ public class ProdutoTests
             .Should().BeTrue("Descrição com valor null");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.DescricaoInvalida);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Descricao")));
     }
 
 
-    [Fact(DisplayName = "Não deveria incluir produto, descrição com mais de 300 caracteres")]
+    [Fact(DisplayName = "Não deveria incluir produto, descrição com mais de 500 caracteres")]
     [Trait("Core > Domain > Entities > Produto", "Descricao")]
     public void NaoDeveriaIncluirProdutoDescricaoComMaisDe300Caracteres()
     {
         // [ Act ]
 
         var resultadoAoCriarProduto =
-            CriarCenariosParaDescricao("a".PadLeft(301, 'a'));
+            CriarCenariosParaDescricao("a".PadLeft(501, 'a'));
 
         // [ Assert ]
 
         resultadoAoCriarProduto.IsFailed
             .Should().BeTrue("Descrição com mais de 300 caracteres");
 
+        var descricaoMuitoGrande = MensagemDeErro
+            .ExcedeuMaximoDeCaracteres("Descricao", 500);
+        
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.DescricaoInvalida);
+            .HasError(x => x.Message.Contains(descricaoMuitoGrande));
     }
 
 
@@ -186,18 +194,18 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.DescricaoInvalida);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Descricao")));
     }
 
 
-    [Fact(DisplayName = "Não deveria alterar produto, descrição com mais de 300 caracteres")]
+    [Fact(DisplayName = "Não deveria alterar produto, descrição com mais de 500 caracteres")]
     [Trait("Core > Domain > Entities > Produto - Alteração", "Descricao")]
     public void NaoDeveriaAlterarProdutoDescricaoComMaisDe300Caracteres()
     {
         // [ Act ]
 
         var produto = CriarProduto();
-        var resultado = produto.AlterarDescricao("a".PadLeft(301, 'a'));
+        var resultado = produto.AlterarDescricao("a".PadLeft(501, 'a'));
 
         // [ Assert ]
 
@@ -208,7 +216,7 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.DescricaoInvalida);
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Descricao")));
     }
 
     #endregion
@@ -230,7 +238,7 @@ public class ProdutoTests
             .Should().BeTrue("Preço zerado");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.PrecoZerado);
+            .HasError(x => x.Message.Contains("O preço do produto deve ser maior que zero."));
     }
 
 
@@ -249,7 +257,7 @@ public class ProdutoTests
             .Should().BeTrue("Preço negativo");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.PrecoNegativo);
+            .HasError(x => x.Message.Contains("O preço do produto deve ser maior que zero."));
     }
 
     // Alteração
@@ -275,7 +283,7 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.PrecoZerado);
+            .HasError(x => x.Message.Contains("O preço do produto deve ser maior que zero."));
     }
 
 
@@ -300,7 +308,7 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.PrecoNegativo);
+            .HasError(x => x.Message.Contains("O preço do produto deve ser maior que zero."));
     }
 
     #endregion
@@ -322,7 +330,7 @@ public class ProdutoTests
             .Should().BeTrue("Categoria em branco");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.CategoriaNaoInformada);
+            .HasError(x => x.Message.Contains("O ID da categoria do produto não pode estar vazio."));
     }
 
 
@@ -341,7 +349,7 @@ public class ProdutoTests
             .Should().BeTrue("Categoria com mais de 50 caracteres");
 
         resultadoAoCriarProduto
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.CategoriaComMaisDe50Caracteres);
+            .HasError(x => x.Message.Contains(MensagemDeErro.ExcedeuMaximoDeCaracteres("Categoria", 50)));
     }
 
 
@@ -369,7 +377,7 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.CategoriaNaoInformada);
+            .HasError(x => x.Message.Contains("O ID da categoria do produto não pode estar vazio."));
     }
 
 
@@ -379,7 +387,7 @@ public class ProdutoTests
     {
         // [ Arrage ]
 
-        var produto = CriarProduto();
+        var produto = MontarProduto();
 
         // [ Act ]
 
@@ -392,7 +400,14 @@ public class ProdutoTests
             .Should().Be(DateTime.MinValue);
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.CategoriaComMaisDe50Caracteres);
+            .HasError(x => x.Message.Contains(MensagemDeErro.ExcedeuMaximoDeCaracteres("Categoria", 50)));
+    }
+
+    private static Produto MontarProduto()
+    {
+        var fixture = new Fixture();
+        var produto = fixture.Create<Produto>();
+        return produto;
     }
 
     #endregion
@@ -405,7 +420,12 @@ public class ProdutoTests
     {
         // [ Arrage ]
 
-        var produto = CriarCenariosParaNome("Guitarra").Value;
+        var fixture = new Fixture();
+        var produto = fixture.Create<Produto>();
+        
+        //var produto = CriarCenariosParaNome("Guitarra").Value;
+        
+        
 
         // [ Act ]
 
@@ -425,7 +445,8 @@ public class ProdutoTests
     {
         // [ Arrage ]
 
-        var produto = CriarCenariosParaNome("Guitarra").Value;
+        var fixture = new Fixture();
+        var produto = fixture.Create<Produto>();
 
         // [ Act ]
 
@@ -436,7 +457,8 @@ public class ProdutoTests
         imagemIncluida.IsFailed.Should()
             .BeTrue("Imagem sem nome");
 
-        imagemIncluida.HasError(x => x.Message == Produto.MensagemDeErroPara.NomeDaImagemInvalida);
+        imagemIncluida
+            .HasError(x => x.Message.Contains(MensagemDeErro.CampoInvalido("Imagem")));
     }
 
     [Fact(DisplayName = "Deveria falhar ao alterar o produto, produto já tem 10 imagens")]
@@ -445,7 +467,8 @@ public class ProdutoTests
     {
         // [ Arrage ]
 
-        var produto = CriarCenariosParaNome("Guitarra").Value;
+        var fixture = new Fixture();
+        var produto = fixture.Create<Produto>();
 
         // [ Act ]
 
@@ -460,7 +483,8 @@ public class ProdutoTests
             .BeTrue($"Tem {produto.Imagens.Count} produtos");
 
         imagemIncluida
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.QuantidadeMaximaDeImagensExedida)
+            .HasError(x => 
+                x.Message.Contains("Quantidade de imagens excedida para esse produto. A quantidade máxima é 10."))
             .Should().BeTrue($"Tem {produto.Imagens.Count} produtos");
     }
 
@@ -474,7 +498,8 @@ public class ProdutoTests
     {
         // [ Arrage ]
 
-        var produto = CriarProduto();
+        var fixture = new Fixture();
+        var produto = fixture.Create<Produto>();
 
         // [ Act ]
 
@@ -489,7 +514,7 @@ public class ProdutoTests
             .BeTrue("Estoque negativo.");
 
         resultado
-            .HasError(x => x.Message == Produto.MensagemDeErroPara.QuantidadeEmEstoqueInvalida);
+            .HasError(x => x.Message.Contains("A quantidade em estoque do produto deve ser maior ou igual a zero."));
     }
 
 

@@ -39,10 +39,10 @@ public class IncluirProdutoCommandHandler : IRequestHandler<IncluirProdutoComman
         if (resultado.IsFailed)
         {
             _logger.LogInfo("Não inseriru o produto. Não passou na validação");
-            return resultado.ToResult();
+            return resultado;
         }
 
-        var resultadoInsersao = await _repositorio.InserirAsync(resultado.Value, cancellationToken);
+        var resultadoInsersao = await _repositorio.InserirAsync(produto, cancellationToken);
 
         if (resultado.IsSuccess)
             _logger.LogInfo($"Produto inserido com sucesso. ProdutoID: {{resultado.Value.Id}}");

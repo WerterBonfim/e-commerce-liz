@@ -9,5 +9,7 @@ public class MensagemDeErro
         => $"O campo {campo} está inválido, tem menos de {qtd} caracteares";
     
     public static string CampoInvalido(string? campo) => $"Campo {campo} está inválido."; 
+    public static string CampoDeveTerExatamente(string? campo, int qtdCaracteres) 
+        => $"Campo {campo} deve conter {qtdCaracteres} caracteres"; 
 
 }

@@ -38,7 +38,7 @@ public class ClienteCommandHandler : IRequestHandler<IncluirClienteCommand, Resu
         if (resultado.IsFailed)
         {
             _logger.LogInfo("Não inseriru o cliente. Não passou na validação");
-            return resultado.ToResult();
+            return resultado;
         }
 
         var resultadoInsersao = await _clienteRepositorio.InserirAsync(cliente, cancellationToken);

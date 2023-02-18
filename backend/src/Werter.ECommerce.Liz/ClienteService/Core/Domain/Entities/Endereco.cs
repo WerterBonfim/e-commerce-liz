@@ -1,4 +1,5 @@
 using Core;
+using Domain.Entities.Validators;
 using FluentResults;
 
 namespace Domain.Entities;
@@ -13,37 +14,18 @@ public sealed class Endereco : EntityBase<Endereco>
     public string? Complemento { get; set; }
     public string Cidade { get; set; }
     public string Estado { get; set; }
-    
-
-   
 
 
-    public override Result<Endereco> Validar()
+
+    public override Result Validar()
     {
-        var resultadoValidacao = new ValidacoesBuilder()
-            .Campo(Logradouro).NaoPodeSerNulo().Minimo(2).Maximo(300)
-            .Campo(Numero).NaoPodeSerNulo().Maximo(20)
-            .Campo(Cep).NaoPodeSerNulo().Exatamente(8)
-            .Campo(Bairro).NaoPodeSerNulo().Minimo(2).Maximo(100)
-            .Campo(Cidade).NaoPodeSerNulo().Minimo(2).Maximo(100)
-            .Campo(Estado).NaoPodeSerNulo().Exatamente(2)
-            .Validar();
-
-        if (resultadoValidacao.IsFailed)
-            return resultadoValidacao;
+        var resultado = new ValidacaoDeEndereco().Validate(this);
         
-        return Result.Ok(new Endereco
-        {
-            Logradouro = Logradouro,
-            Bairro = Bairro,
-            Cep = Cep,
-            Cidade = Cidade,
-            Complemento = Complemento,
-            Estado = Estado,
-            Numero = Numero
-        });
+        return resultado.IsValid is false
+            ? Result.Fail(resultado.Errors.Select(x => x.ErrorMessage)) 
+            : Result.Ok();
     }
-
+    
 
  
 }

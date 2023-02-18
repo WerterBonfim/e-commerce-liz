@@ -16,7 +16,7 @@ public abstract class EntityBase<T>
         DataHoraCadastro = DateTime.Now;
     }
 
-    public abstract Result<T> Validar();
+    public abstract Result Validar();
 
     public void HouveAtualizacao() => DataHoraAlteracao = DateTime.Now;
 
